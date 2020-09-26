@@ -2,4 +2,7 @@ from django.db import models
 
 
 class Game(models.Model):
-    pass
+    started = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Game #{self.pk}'

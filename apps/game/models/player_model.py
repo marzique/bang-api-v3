@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator 
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+from game.models import Game
 
 
 class Player(models.Model):
@@ -31,18 +33,21 @@ class Player(models.Model):
         WILLY = 'WK', 'Willy the Kid'
     
     # FIELDS
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=2, choices=Role.choices, blank=True)
+    slot = models.PositiveIntegerField(blank=True, null=True)
     character = models.CharField(max_length=2, choices=Character.choices, blank=True)
     health = models.PositiveIntegerField(
         blank=True, 
         null=True, 
         validators=[MaxValueValidator(5)]
     )
+
 
     def __str__(self):
         return f'[{self.role}] {self.name} ({self.health})'
