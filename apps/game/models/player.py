@@ -72,11 +72,11 @@ class Player(models.Model):
         """Return list of enemies ordered by slot, first one is the one after you
         and last one is the one before."""
 
-        room = self.room
+        game = self.game
         if alive:
-            all_players = list(self.room.players.filter(alive=True).order_by('slot'))
+            all_players = list(self.game.players.filter(alive=True).order_by('slot'))
         else:
-            all_players = list(self.room.players.order_by('slot'))
+            all_players = list(self.game.players.order_by('slot'))
         self_index = all_players.index(self)
         enemies_ordered = all_players[self_index+1:] + all_players[:self_index]
         return enemies_ordered
@@ -84,7 +84,7 @@ class Player(models.Model):
     def get_distance(self, enemy):
         """Return minimum distance between player and enemy, excluding dead enemies"""
 
-        alive_players = list(self.room.players.filter(alive=True).order_by('slot'))
+        alive_players = list(self.game.players.filter(alive=True).order_by('slot'))
         idx1 = alive_players.index(self)
         idx2 = alive_players.index(enemy)
         distance = abs(idx1 - idx2)

@@ -10,6 +10,7 @@ django = "*"
 djangorestframework = "*"
 django-extensions = "*"
 python-dateutil = "*"
+nplusone = "*"
 
 [requires]
 python_version = "3.6"

@@ -1,4 +1,5 @@
-# Python imports
+import logging
+
 from os.path import join
 
 # project imports
@@ -27,3 +28,13 @@ DATABASES = {
         'NAME': join(PROJECT_ROOT, 'run', 'dev.sqlite3'),
     }
 }
+
+# Should be the first in line:
+MIDDLEWARE = ['nplusone.ext.django.NPlusOneMiddleware',] + MIDDLEWARE
+
+INSTALLED_APPS += [
+    'nplusone.ext.django',
+]
+
+NPLUSONE_LOGGER = logging.getLogger('nplusone')
+NPLUSONE_LOG_LEVEL = logging.WARN

@@ -15,24 +15,20 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.generics import (
-    ListCreateAPIView,
     ListAPIView,
-    RetrieveUpdateAPIView,
-    RetrieveUpdateDestroyAPIView,
-    UpdateAPIView,
-    CreateAPIView,
-    DestroyAPIView,
-    GenericAPIView
+    RetrieveAPIView
 )
 
-from game.api.serializers import PlayerAPISerializer
-from game.models import Player
+from game.api.serializers import PlayerSerializer, GameStateSerializer
+from game.models import Player, Game
 
+
+class GameStateAPIView(RetrieveAPIView):
+    serializer_class = GameStateSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = Game.objects.all()
 
 class PlayerAPIView(ListAPIView):
-    serializer_class = PlayerAPISerializer
+    serializer_class = PlayerSerializer
     permission_classes = (IsAuthenticated,)
-
-    def get_queryset(self):
-        queryset = Player.objects.all()
-        return queryset
+    queryset = Player.objects.all()

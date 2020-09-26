@@ -13,7 +13,7 @@ class GameLogic:
 
     @staticmethod
     @transaction.atomic
-    def player_join_game(player, game)
+    def player_join_game(player, game):
         """Add player to game, create card storages for him"""
 
         player.game = game
@@ -34,7 +34,5 @@ class GameLogic:
         deck.fill_deck()
         Discard(game=game).save()
         return game
-
-
 
 game_logic = GameLogic()
