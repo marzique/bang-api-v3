@@ -1,6 +1,6 @@
 import random 
 
-from django.db import models
+from django.db import models, transaction
 from django.db.models import Q
 
 from game.constants import ROLES
@@ -13,6 +13,7 @@ class Game(models.Model):
     def __str__(self):
         return f'Game #{self.pk}'
 
+    @transaction.atomic
     def start_game(self):
         """Place players in table slots, give them random role & character.
         Set their health accordingly, sheriff gets +1 health and +2 cards for turn.
@@ -44,7 +45,8 @@ class Game(models.Model):
         
         self.started = True
         self.save()
-    
+
+    @transaction.atomic
     def give_cards(self, player, amount):
         """Transfer <amount> of top cards from room deck to player hand.
         refill_deck if needed."""
@@ -60,6 +62,7 @@ class Game(models.Model):
             card.hand = player.hand
             card.save()
 
+    @transaction.atomic
     def refill_deck(self):
         """Transfer all cards to deck except last"""
 
@@ -73,6 +76,7 @@ class Game(models.Model):
             card.deck = self.deck
             card.save()
 
+    
     def get_last_discard(self):
         try:
             return self.discard.cards.latest('updated')

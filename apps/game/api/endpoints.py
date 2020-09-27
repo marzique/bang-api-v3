@@ -20,10 +20,12 @@ from rest_framework.generics import (
 )
 
 from game.api.serializers import PlayerSerializer, GameStateSerializer
-from game.models import Player, Game
+from game.models import Player, Game, Hand, Effects, Gun
 
 
 class GameStateAPIView(RetrieveAPIView):
+    """Main game endpoint for updating game information"""
+
     serializer_class = GameStateSerializer
     permission_classes = (IsAuthenticated,)
     queryset = Game.objects.all()

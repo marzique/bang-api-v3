@@ -33,7 +33,7 @@ class Player(models.Model):
         WILLY = 'WK', 'Willy the Kid'
     
     # FIELDS
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='players')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='players', null=True, blank=True)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

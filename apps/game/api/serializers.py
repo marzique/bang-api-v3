@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from game.models import Player, Game, Card
 
 
@@ -19,7 +21,10 @@ class PlayerSerializer(serializers.ModelSerializer):
         return CardSerializer(obj.effects.cards.all(), many=True).data
 
     def get_gun(self, obj):
-        return CardSerializer(obj.hand.cards.first()).data
+        try:
+            return CardSerializer(obj.gun.card).data
+        except ObjectDoesNotExist:
+            return None
 
 
 class EnemySerializer(PlayerSerializer):
