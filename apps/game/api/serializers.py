@@ -62,7 +62,8 @@ class GameStateSerializer(serializers.ModelSerializer):
 
     def get_discard(self, obj):
         discard = obj.discard.cards.first()
-        return CardSerializer(discard).data
+        if discard:
+            return CardSerializer(discard).data
 
     def _get_current_player(self):
         user = self.context['request'].user

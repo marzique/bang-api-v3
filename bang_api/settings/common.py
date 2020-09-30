@@ -56,7 +56,8 @@ INSTALLED_APPS += [
     'django_extensions',
 
     # project apps
-    'game'
+    'game',
+    'front'
 ]
 
 # Middlewares

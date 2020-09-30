@@ -17,6 +17,9 @@ urlpatterns = [
 
     # enable the admin interface
     url(r'^admin/', admin.site.urls),
+    
+    # FRONT-END PAGES
+    path('', include('front.urls')),
 
     # API
     path('api/v1/', include('game.api.urls')),
