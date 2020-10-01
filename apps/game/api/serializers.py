@@ -68,3 +68,9 @@ class GameStateSerializer(serializers.ModelSerializer):
     def _get_current_player(self):
         user = self.context['request'].user
         return user.player
+
+
+class CreateUpdatePlayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Player
+        fields = ('id', 'name', )

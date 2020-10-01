@@ -15,11 +15,16 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.generics import (
-    ListAPIView,
-    RetrieveAPIView
+    CreateAPIView,
+    RetrieveAPIView,
+    UpdateAPIView
 )
 
-from game.api.serializers import PlayerSerializer, GameStateSerializer
+from game.api.serializers import (
+    PlayerSerializer, 
+    GameStateSerializer,
+    CreateUpdatePlayerSerializer
+)
 from game.models import Player, Game, Hand, Effects, Gun
 
 
@@ -30,7 +35,19 @@ class GameStateAPIView(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Game.objects.all()
 
-class PlayerAPIView(ListAPIView):
-    serializer_class = PlayerSerializer
+class PlayerAPIView(CreateAPIView, UpdateAPIView):
+    serializer_class = CreateUpdatePlayerSerializer
     permission_classes = (IsAuthenticated,)
-    queryset = Player.objects.all()
+    
+    def get_queryset(self):
+        return Player.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except IntegrityError:
+            content = {'error': 'Player with the same name already exists'}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
